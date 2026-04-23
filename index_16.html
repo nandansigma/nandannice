@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NandanNice | Gaming</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--pink:#ff2d78;--cyan:#00f5ff;--yellow:#ffe600;--green:#39ff14;--purple:#6a00ff;--dark:#05050f;--dark2:#0d0d2b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;}
+/* BATTLE AXE CURSOR */
+*{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cline x1='6' y1='30' x2='24' y2='12' stroke='%23999' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 12 Q31 5 31 1 Q27 1 20 8 Z' fill='%2300f5ff' stroke='%23fff' stroke-width='0.8'/%3E%3Cpath d='M24 12 Q31 19 29 23 Q25 21 19 15 Z' fill='%2300f5ff' stroke='%23fff' stroke-width='0.8'/%3E%3Ccircle cx='6' cy='30' r='2.5' fill='%23ffe600'/%3E%3C/svg%3E") 6 30, auto !important;}
+input,textarea,select{cursor:text!important;}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,245,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.04) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite;}
+@keyframes gridMove{to{background-position:60px 60px;}}
+#ammoHUD{position:fixed;bottom:20px;right:20px;z-index:9000;background:rgba(5,5,15,.9);border:1px solid rgba(255,230,0,.4);padding:8px 16px;opacity:0;transition:opacity .3s;pointer-events:none;font-family:'Orbitron',monospace;font-size:.7rem;color:var(--yellow);}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(5,5,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,245,255,.15);}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.logo img{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:center 10%;border:2px solid var(--cyan);box-shadow:0 0 10px rgba(0,245,255,.5);flex-shrink:0;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--cyan);}
+.nav-auth{display:flex;align-items:center;gap:10px;}
+.lang-wrap{position:relative;}
+.lang-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#fff;font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:700;padding:7px 13px;border-radius:2px;}
+.lang-btn:hover{background:rgba(255,255,255,.1);}
+.lang-dd{display:none;position:absolute;top:calc(100%+6px);right:0;background:#0d0d2b;border:1px solid rgba(255,255,255,.12);min-width:155px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.6);}
+.lang-dd.open{display:block;}
+.lang-opt{display:block;width:100%;padding:9px 15px;background:none;border:none;color:rgba(255,255,255,.65);font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;text-align:left;border-bottom:1px solid rgba(255,255,255,.05);}
+.lang-opt:last-child{border-bottom:none;}
+.lang-opt:hover,.lang-opt.active{color:var(--cyan);background:rgba(0,245,255,.06);}
+.btn-sm{background:transparent;color:var(--cyan);border:1px solid rgba(0,245,255,.4);padding:7px 16px;font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.btn-sm:hover{background:rgba(0,245,255,.1);}
+.btn-hot{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;padding:7px 16px;font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.btn-hot:hover{opacity:.85;}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;padding:13px 32px;font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(255,45,120,.5);}
+.btn-outline{background:transparent;color:var(--cyan);border:1px solid var(--cyan);padding:13px 32px;font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:background .2s,transform .2s;}
+.btn-outline:hover{background:rgba(0,245,255,.1);transform:translateY(-2px);}
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 60px;z-index:1;}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(106,0,255,.35),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:glowPulse 4s ease-in-out infinite;pointer-events:none;}
+@keyframes glowPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7;}50%{transform:translate(-50%,-50%) scale(1.1);opacity:1;}}
+.hero-badge{display:inline-block;background:rgba(255,45,120,.15);border:1px solid var(--pink);color:var(--pink);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;margin-bottom:20px;}
+.hero h1{font-family:'Orbitron',monospace;font-size:clamp(2.8rem,9vw,6.5rem);font-weight:900;line-height:1;margin-bottom:14px;}
+.nice{background:linear-gradient(90deg,var(--yellow),var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:shimmer 3s linear infinite;}
+@keyframes shimmer{0%{background-position:0%;}100%{background-position:200%;}}
+.hero p{font-size:1.15rem;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto 36px;line-height:1.6;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.scroll-ind{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,.35);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;animation:bob 2s ease-in-out infinite;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
+/* SECTIONS */
+section{position:relative;z-index:1;padding:90px 48px;}
+.sec-label{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;font-weight:700;}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:14px;line-height:1.1;}
+.sec-desc{color:rgba(255,255,255,.5);font-size:1.05rem;max-width:540px;line-height:1.7;margin-bottom:50px;}
+/* GAMES */
+.games-section{background:var(--dark2);}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;max-width:1200px;margin:0 auto;}
+.game-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s;}
+.game-card:hover{transform:translateY(-6px);border-color:var(--cyan);box-shadow:0 0 24px rgba(0,245,255,.18);}
+.game-thumb{width:100%;height:170px;object-fit:cover;display:block;}
+.game-body{padding:18px;}
+.game-tag{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--pink);font-weight:700;margin-bottom:5px;}
+.game-body h3{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;margin-bottom:7px;}
+.game-body p{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.5;}
+.game-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid rgba(255,255,255,.06);}
+.rating{color:var(--yellow);font-size:.85rem;font-weight:700;}
+.view-btn{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.3);color:var(--cyan);font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;letter-spacing:1px;padding:5px 14px;}
+.view-btn:hover{background:rgba(0,245,255,.25);}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:28px;max-width:880px;margin:0 auto;}
+.stat-card{padding:36px 16px;text-align:center;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);position:relative;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat-card:nth-child(1)::before{background:var(--pink);}
+.stat-card:nth-child(2)::before{background:var(--cyan);}
+.stat-card:nth-child(3)::before{background:var(--yellow);}
+.stat-card:nth-child(4)::before{background:var(--green);}
+.stat-num{font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-lbl{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:6px;font-weight:600;}
+/* ABOUT */
+.about-inner{display:flex;align-items:center;gap:70px;max-width:1100px;margin:0 auto;flex-wrap:wrap;}
+.about-hex{width:260px;height:260px;flex-shrink:0;background:linear-gradient(135deg,var(--purple),var(--pink));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:5rem;animation:hueRot 8s linear infinite;}
+@keyframes hueRot{0%{filter:hue-rotate(0);}100%{filter:hue-rotate(360deg);}}
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;max-width:960px;margin:0 auto;}
+.plan-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:36px 28px;position:relative;transition:transform .25s;}
+.plan-card:hover{transform:translateY(-5px);}
+.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.plan-card.free::before{background:rgba(255,255,255,.2);}
+.plan-card.pro{border-color:rgba(255,45,120,.4);}
+.plan-card.pro::before{background:linear-gradient(90deg,var(--pink),var(--purple));}
+.plan-card.elite::before{background:linear-gradient(90deg,var(--yellow),var(--green));}
+.popular{position:absolute;top:18px;right:18px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-size:.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;}
+.plan-name{font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px;}
+.plan-price{display:flex;align-items:flex-end;gap:3px;margin-bottom:6px;}
+.plan-price .sym{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:6px;}
+.plan-price .amt{font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;line-height:1;}
+.plan-card.free .amt{color:rgba(255,255,255,.65);}
+.plan-card.pro .amt{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.plan-card.elite .amt{background:linear-gradient(90deg,var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.plan-price .per{font-size:.85rem;color:rgba(255,255,255,.3);margin-bottom:8px;}
+.plan-desc{font-size:.88rem;color:rgba(255,255,255,.4);margin-bottom:24px;line-height:1.5;}
+.plan-div{height:1px;background:rgba(255,255,255,.07);margin-bottom:24px;}
+.plan-feats{list-style:none;margin-bottom:30px;}
+.plan-feats li{display:flex;align-items:center;gap:10px;font-size:.9rem;color:rgba(255,255,255,.65);padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.plan-feats li:last-child{border-bottom:none;}
+.plan-feats li.no{color:rgba(255,255,255,.22);}
+.fc{color:var(--green);}.fx{color:rgba(255,255,255,.2);}
+.plan-btn{width:100%;padding:13px;border:none;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.plan-card.free .plan-btn{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);}
+.plan-card.free .plan-btn:hover{background:rgba(255,255,255,.06);}
+.plan-card.pro .plan-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;}
+.plan-card.pro .plan-btn:hover{opacity:.85;}
+.plan-card.elite .plan-btn{background:linear-gradient(135deg,var(--yellow),var(--green));color:#000;}
+.plan-card.elite .plan-btn:hover{opacity:.85;}
+/* NEWSLETTER */
+.news-box{max-width:520px;margin:0 auto;text-align:center;}
+.news-form{display:flex;margin-top:28px;}
+.news-form input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-right:none;color:#fff;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:13px 18px;outline:none;}
+.news-form input:focus{border-color:var(--cyan);}
+.news-form input::placeholder{color:rgba(255,255,255,.28);}
+.news-form button{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;padding:13px 24px;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.news-form button:hover{opacity:.85;}
+/* FOOTER */
+footer{position:relative;z-index:1;background:var(--dark2);border-top:1px solid rgba(255,255,255,.07);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.foot-logo{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.foot-links a{color:rgba(255,255,255,.35);text-decoration:none;font-size:.85rem;margin-left:20px;}
+.foot-links a:hover{color:var(--cyan);}
+.foot-copy{color:rgba(255,255,255,.2);font-size:.78rem;}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{background:#0d0d2b;border:1px solid rgba(255,255,255,.12);width:100%;max-width:400px;padding:36px;position:relative;box-shadow:0 0 60px rgba(106,0,255,.3);transform:translateY(20px);transition:transform .3s;}
+.overlay.on .modal{transform:translateY(0);}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--cyan));}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.3rem;}
+.modal-close:hover{color:var(--pink);}
+.modal-logo{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.modal-logo img{width:30px;height:30px;border-radius:50%;object-fit:cover;object-position:center 10%;border:2px solid var(--cyan);}
+.modal-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:26px;}
+.modal-tab{flex:1;background:none;border:none;color:rgba(255,255,255,.4);font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:11px;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.modal-tab.on{color:var(--cyan);border-bottom-color:var(--cyan);}
+.mform{display:none;flex-direction:column;gap:14px;}
+.mform.on{display:flex;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700;}
+.fg input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:11px 14px;outline:none;transition:border-color .2s;width:100%;}
+.fg input:focus{border-color:var(--cyan);}
+.fg input::placeholder{color:rgba(255,255,255,.22);}
+.forgot{text-align:right;font-size:.75rem;color:rgba(0,245,255,.5);}
+.msubmit{padding:13px;background:linear-gradient(135deg,var(--pink),var(--purple));border:none;color:#fff;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;width:100%;}
+.msubmit:hover{opacity:.85;}
+.mswitch{text-align:center;font-size:.83rem;color:rgba(255,255,255,.35);}
+.mswitch span{color:var(--cyan);font-weight:700;}
+.msuccess{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:16px 0;}
+.msuccess.on{display:flex;}
+.msuccess .sicon{font-size:2.8rem;}
+.msuccess h3{font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);}
+.msuccess p{color:rgba(255,255,255,.45);font-size:.88rem;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}50%{transform:translateX(5px);}87%{transform:translateX(-4px);}}
+.shake{animation:shk .4s ease;}
+/* ADMIN */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:8500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.admin-overlay.on{opacity:1;pointer-events:all;}
+.admin-panel{background:#0d0d2b;border:1px solid rgba(255,230,0,.3);width:100%;max-width:800px;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 0 80px rgba(255,230,0,.12);transform:scale(.95);transition:transform .3s;}
+.admin-overlay.on .admin-panel{transform:scale(1);}
+.admin-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--yellow),var(--green),var(--yellow));background-size:200%;animation:shimmer 2s linear infinite;}
+.admin-head{display:flex;align-items:center;justify-content:space-between;padding:22px 30px;border-bottom:1px solid rgba(255,255,255,.07);}
+.admin-title{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:900;display:flex;align-items:center;gap:10px;}
+.admin-badge-label{background:linear-gradient(135deg,var(--yellow),var(--green));color:#000;font-size:.5rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;}
+.admin-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;}
+.admin-close:hover{color:var(--pink);}
+.admin-body{padding:28px;}
+.admin-welcome{background:rgba(255,230,0,.06);border:1px solid rgba(255,230,0,.2);padding:18px 22px;margin-bottom:28px;display:flex;align-items:center;gap:14px;}
+.admin-ava{width:48px;height:48px;overflow:hidden;border-radius:50%;border:2px solid var(--yellow);flex-shrink:0;}
+.admin-ava img{width:100%;height:100%;object-fit:cover;object-position:center 10%;}
+.admin-welcome h3{font-family:'Orbitron',monospace;font-size:.85rem;color:var(--yellow);margin-bottom:3px;}
+.admin-welcome p{font-size:.83rem;color:rgba(255,255,255,.4);}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.ast{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:18px 14px;text-align:center;position:relative;}
+.ast::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.ast:nth-child(1)::after{background:var(--cyan);}
+.ast:nth-child(2)::after{background:var(--pink);}
+.ast:nth-child(3)::after{background:var(--yellow);}
+.ast:nth-child(4)::after{background:var(--green);}
+.ast-n{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;}
+.ast-l{font-size:.65rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.asec{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;}
+.admin-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px;}
+.aact{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:14px 18px;display:flex;align-items:center;gap:12px;text-align:left;}
+.aact:hover{border-color:var(--cyan);background:rgba(0,245,255,.04);}
+.aact-icon{font-size:1.4rem;}
+.aact-lbl{font-size:.88rem;font-weight:700;display:block;color:#fff;}
+.aact-desc{font-size:.72rem;color:rgba(255,255,255,.33);}
+table{width:100%;border-collapse:collapse;}
+th{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:9px 11px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);}
+td{padding:11px;font-size:.87rem;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.7);}
+.up{font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;}
+.up-free{background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);}
+.up-pro{background:rgba(255,45,120,.15);color:var(--pink);}
+.up-elite{background:rgba(255,230,0,.15);color:var(--yellow);}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;}
+.dot-on{background:var(--green);box-shadow:0 0 5px var(--green);}
+.dot-off{background:rgba(255,255,255,.2);}
+.ban-btn{background:rgba(255,45,120,.1);border:1px solid rgba(255,45,120,.3);color:var(--pink);font-size:.68rem;font-weight:700;padding:4px 11px;}
+.ban-btn:hover{background:rgba(255,45,120,.25);}
+.ban-btn.banned{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.2);pointer-events:none;}
+tr.banned{opacity:.45;}
+tr.banned td:first-child::after{content:' 🚫';color:var(--pink);}
+/* LIBRARY */
+.lib-overlay{position:fixed;inset:0;background:var(--dark);z-index:7000;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s;overflow-y:auto;}
+.lib-overlay.on{opacity:1;pointer-events:all;}
+.lib-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 36px;background:rgba(5,5,15,.95);border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:10;}
+.lib-logo{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.lib-user-info{display:flex;align-items:center;gap:9px;font-size:.83rem;color:rgba(255,255,255,.6);}
+.lib-ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-family:'Orbitron',monospace;}
+.lib-pbadge{font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.1);}
+.lib-pbadge.pro{background:rgba(255,45,120,.15);color:var(--pink);border-color:rgba(255,45,120,.3);}
+.lib-pbadge.admin{background:rgba(255,230,0,.15);color:var(--yellow);border-color:rgba(255,230,0,.3);}
+.exit-btn{background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;letter-spacing:1px;padding:6px 14px;}
+.exit-btn:hover{border-color:var(--pink);color:var(--pink);}
+.lib-body{padding:36px;}
+.lib-welcome{margin-bottom:32px;}
+.lib-welcome h2{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;margin-bottom:7px;}
+.lib-welcome p{color:rgba(255,255,255,.42);font-size:.95rem;}
+.lib-sec-title{font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.32);margin:30px 0 14px;display:flex;align-items:center;gap:10px;}
+.lib-sec-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07);}
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;}
+.lib-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);overflow:hidden;transition:transform .2s,border-color .2s;}
+.lib-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.2);}
+.lib-thumb-wrap{position:relative;}
+.lib-thumb{width:100%;height:110px;object-fit:cover;display:block;}
+.lib-lock-overlay{position:absolute;inset:0;background:rgba(5,5,15,.75);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;backdrop-filter:blur(3px);}
+.li-icon{font-size:1.5rem;}
+.li-text{font-size:.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);}
+.lib-info{padding:11px 13px;}
+.lib-gname{font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;margin-bottom:3px;}
+.lib-gcat{font-size:.65rem;color:rgba(255,255,255,.32);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px;}
+.lib-play{width:100%;padding:7px;border:none;font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;}
+.lib-play:hover{opacity:.85;}
+.lib-play.locked{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.3);}
+/* PAYWALL */
+.paywall-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:9500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.paywall-overlay.on{opacity:1;pointer-events:all;}
+.paywall-box{background:#0d0d2b;border:1px solid rgba(255,230,0,.25);max-width:400px;width:100%;padding:36px;text-align:center;box-shadow:0 0 60px rgba(255,45,120,.2);transform:scale(.92);transition:transform .3s;}
+.paywall-overlay.on .paywall-box{transform:scale(1);}
+.paywall-box::before{content:'';display:block;height:3px;margin:-36px -36px 32px;background:linear-gradient(90deg,var(--pink),var(--yellow),var(--cyan));}
+.paywall-plans{display:flex;gap:10px;margin:22px 0;}
+.pp{flex:1;padding:14px 8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);}
+.pp.best{border-color:rgba(255,45,120,.4);background:rgba(255,45,120,.07);}
+.pp-n{font-family:'Orbitron',monospace;font-size:.58rem;letter-spacing:2px;color:rgba(255,255,255,.45);margin-bottom:5px;}
+.pp-p{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;}
+.pp-t{font-size:.58rem;color:var(--pink);font-weight:700;margin-top:3px;}
+.pw-btn{width:100%;padding:13px;border:none;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.pw-btn:hover{opacity:.85;}
+.pw-cancel{background:none;border:none;color:rgba(255,255,255,.28);font-size:.8rem;}
+.pw-cancel:hover{color:rgba(255,255,255,.55);}
+/* GAME SCREEN */
+#gameScreen{position:fixed;inset:0;z-index:9900;display:none;flex-direction:column;background:#000;}
+#gameLoading{position:absolute;inset:0;background:#000;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.load-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.35;}
+.load-content{position:relative;z-index:3;text-align:center;}
+#loadTitle{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:#fff;margin-bottom:6px;}
+#loadSub{color:rgba(255,255,255,.45);font-size:.9rem;margin-bottom:36px;letter-spacing:2px;text-transform:uppercase;}
+.load-bar-wrap{width:280px;height:3px;background:rgba(255,255,255,.1);margin:0 auto 12px;}
+#loadBar{height:100%;width:0%;transition:width .08s;}
+#loadPct{font-family:'Orbitron',monospace;font-size:.72rem;color:rgba(255,255,255,.45);}
+#gamePlay{display:none;flex-direction:column;height:100%;position:relative;}
+.ghud-top{position:absolute;top:0;left:0;right:0;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;z-index:10;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);}
+#gHudTitle{font-family:'Orbitron',monospace;font-size:.75rem;color:#fff;}
+.ghud-right{display:flex;align-items:center;gap:14px;}
+#gPlayers{font-size:.72rem;color:rgba(255,255,255,.55);}
+#gScore{font-family:'Orbitron',monospace;font-size:.88rem;color:var(--yellow);}
+.g-exit-btn{background:rgba(255,45,120,.85);border:none;color:#fff;font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;padding:7px 16px;letter-spacing:1px;}
+.g-exit-btn:hover{background:var(--pink);}
+#gameArea{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+#gameBG{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#gameUI{position:relative;z-index:5;text-align:center;padding:20px;}
+.ghud-bot{position:absolute;bottom:0;left:0;right:0;padding:14px 22px;background:linear-gradient(to top,rgba(0,0,0,.88),transparent);display:flex;justify-content:space-between;align-items:flex-end;}
+.hbar-wrap{display:flex;flex-direction:column;gap:4px;}
+.hbar-lbl{font-size:.58rem;color:rgba(255,255,255,.38);letter-spacing:2px;text-transform:uppercase;}
+.hbar{width:110px;height:5px;background:rgba(255,255,255,.1);}
+#healthBar{height:100%;width:85%;transition:width .5s;}
+#gControls{font-size:.68rem;color:rgba(255,255,255,.32);text-align:center;}
+#gAmmo{font-family:'Orbitron',monospace;font-size:.95rem;color:#fff;text-align:right;}
+.g-crosshair{position:absolute;width:28px;height:28px;pointer-events:none;display:none;}
+.g-crosshair::before,.g-crosshair::after{content:'';position:absolute;background:rgba(255,255,255,.85);}
+.g-crosshair::before{left:0;right:0;top:50%;height:1px;transform:translateY(-50%);}
+.g-crosshair::after{top:0;bottom:0;left:50%;width:1px;transform:translateX(-50%);}
+.ch-dot{position:absolute;top:50%;left:50%;width:4px;height:4px;background:var(--pink);border-radius:50%;transform:translate(-50%,-50%);}
+.g-target{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,45,120,.9),rgba(255,45,120,.3));border:2px solid var(--pink);z-index:6;box-shadow:0 0 16px rgba(255,45,120,.6);animation:tpulse .7s ease-in-out infinite;}
+@keyframes tpulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+@keyframes flashOut{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(2.5);}}
+@keyframes splatOut{0%{opacity:1;transform:translateY(0) scale(.5);}50%{opacity:1;transform:translateY(-12px) scale(1.3);}100%{opacity:0;transform:translateY(-24px) scale(1);}}
+/* PARTICLES */
+.particle{position:fixed;border-radius:50%;pointer-events:none;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0;}10%{opacity:.6;}90%{opacity:.6;}100%{transform:translateY(-100px) rotate(720deg);opacity:0;}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div id="ammoHUD">🪓 <span id="ammoTxt">30/30</span></div>
+<div id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="logo">
+    <img src="Nandan_Lego_Minifigure_in_Action_Pose.png" alt="N" onerror="this.style.display='none'"/>
+    NandanNice
+  </a>
+  <ul class="nav-links">
+    <li><a href="#games">Games</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <div class="lang-wrap">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang(event)">🌐 EN ▾</button>
+      <div class="lang-dd" id="langDd">
+        <button class="lang-opt active" onclick="setLang('en',this)">🇬🇧 English</button>
+        <button class="lang-opt" onclick="setLang('hi',this)">🇮🇳 हिन्दी</button>
+        <button class="lang-opt" onclick="setLang('ta',this)">🇮🇳 தமிழ்</button>
+        <button class="lang-opt" onclick="setLang('ml',this)">🇮🇳 മലയാളം</button>
+        <button class="lang-opt" onclick="setLang('it',this)">🇮🇹 Italiano</button>
+        <button class="lang-opt" onclick="setLang('mn',this)">🍌 Minionese</button>
+      </div>
+    </div>
+    <button class="btn-sm" onclick="openModal('si')">Sign In</button>
+    <button class="btn-hot" onclick="openModal('su')">Sign Up</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div style="position:relative;z-index:2;">
+    <div class="hero-badge" id="hBadge">🎮 Level Up Your Game</div>
+    <h1 id="hH1">NANDAN<span class="nice">NICE</span></h1>
+    <p id="hDesc">Your ultimate gaming destination. Reviews, news, guides and a community that lives and breathes games.</p>
+    <div class="hero-btns">
+      <a href="#games" class="btn-primary" id="hBtn1">Explore Games</a>
+      <a href="#join" class="btn-outline" id="hBtn2">Join Community</a>
+    </div>
+  </div>
+  <div class="scroll-ind"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- GAMES -->
+<section class="games-section" id="games">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="sec-label" id="gLabel">// Featured</div>
+    <h2 class="sec-title" id="gTitle">Top Games</h2>
+    <p class="sec-desc" id="gDesc">Handpicked by Nandan — games that actually slap. No fluff, just fire.</p>
+    <div class="games-grid">
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg" alt="Cyberpunk 2077"/>
+        <div class="game-body"><div class="game-tag">RPG / Open World</div><h3>Cyberpunk 2077</h3><p>Open-world RPG in dystopian Night City. Insane story and visuals.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.4</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Elden Ring"/>
+        <div class="game-body"><div class="game-tag">Action RPG</div><h3>Elden Ring</h3><p>FromSoftware's masterpiece. Brutal open-world combat that will test you.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.8</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg" alt="Apex Legends"/>
+        <div class="game-body"><div class="game-tag">Battle Royale</div><h3>Apex Legends</h3><p>Fast-paced BR with unique legends and the smoothest movement in the genre.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.2</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg" alt="CS2"/>
+        <div class="game-body"><div class="game-tag">Tactical FPS</div><h3>Counter-Strike 2</h3><p>The world's most competitive FPS. Pure skill, tight maps.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.1</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg" alt="Hogwarts Legacy"/>
+        <div class="game-body"><div class="game-tag">RPG / Adventure</div><h3>Hogwarts Legacy</h3><p>Explore Hogwarts like never before. Magic, mystery and massive open world.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.0</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+      <div class="game-card">
+        <img class="game-thumb" src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" alt="GTA V"/>
+        <div class="game-body"><div class="game-tag">Open World</div><h3>GTA V Online</h3><p>Los Santos is yours. Heists, races, chaos — no rules.</p></div>
+        <div class="game-footer"><span class="rating">★ 9.3</span><button class="view-btn" onclick="openModal('si')">Play</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats" style="background:var(--dark);text-align:center;">
+  <div class="sec-label" style="text-align:center" id="stLabel">// By the numbers</div>
+  <h2 class="sec-title" style="text-align:center;margin-bottom:50px" id="stTitle">NandanNice in Stats</h2>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">500+</div><div class="stat-lbl">Games Reviewed</div></div>
+    <div class="stat-card"><div class="stat-num">50K</div><div class="stat-lbl">Community Members</div></div>
+    <div class="stat-card"><div class="stat-num">1M+</div><div class="stat-lbl">Monthly Visitors</div></div>
+    <div class="stat-card"><div class="stat-num">99%</div><div class="stat-lbl">Accuracy Rate</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--dark2);">
+  <div class="about-inner">
+    <div class="about-hex">🎮</div>
+    <div>
+      <div class="sec-label" id="aLabel">// Who we are</div>
+      <h2 class="sec-title" id="aTitle">Made by a Gamer,<br/>For Gamers</h2>
+      <p class="sec-desc" id="aDesc">NandanNice was born from one simple idea — gamers deserve honest reviews and a community that actually cares about the game. No paid reviews. No clickbait. Just raw passion for gaming.</p>
+      <a href="#join" class="btn-primary" id="aBtn">Join the Squad</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--dark);">
+  <div style="max-width:960px;margin:0 auto;">
+    <div class="sec-label" id="pLabel">// Membership</div>
+    <h2 class="sec-title" id="pTitle">Monthly Plans</h2>
+    <p class="sec-desc" id="pDesc">Pick your level. Cancel anytime. No hidden fees.</p>
+    <div class="pricing-grid">
+      <div class="plan-card free">
+        <div class="plan-name">Rookie</div>
+        <div class="plan-price"><span class="sym">₹</span><span class="amt">0</span><span class="per">/mo</span></div>
+        <div class="plan-desc">Get started for free. Perfect for casual gamers.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
+          <li><span class="fc">✓</span> Browse all game reviews</li>
+          <li><span class="fc">✓</span> Community forum access</li>
+          <li><span class="fc">✓</span> Weekly newsletter</li>
+          <li class="no"><span class="fx">✗</span> Early access reviews</li>
+          <li class="no"><span class="fx">✗</span> Ad-free experience</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('su')">Get Started</button>
+      </div>
+      <div class="plan-card pro">
+        <div class="popular">Most Popular</div>
+        <div class="plan-name">Pro Gamer</div>
+        <div class="plan-price"><span class="sym">₹</span><span class="amt">299</span><span class="per">/mo</span></div>
+        <div class="plan-desc">For serious gamers who want it all.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
+          <li><span class="fc">✓</span> Everything in Rookie</li>
+          <li><span class="fc">✓</span> Early access reviews</li>
+          <li><span class="fc">✓</span> Ad-free experience</li>
+          <li><span class="fc">✓</span> Monthly game giveaway</li>
+          <li class="no"><span class="fx">✗</span> 1-on-1 coaching</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('su')">Go Pro →</button>
+      </div>
+      <div class="plan-card elite">
+        <div class="plan-name">Elite</div>
+        <div class="plan-price"><span class="sym">₹</span><span class="amt">799</span><span class="per">/mo</span></div>
+        <div class="plan-desc">The ultimate NandanNice experience.</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats">
+          <li><span class="fc">✓</span> Everything in Pro</li>
+          <li><span class="fc">✓</span> 1-on-1 coaching</li>
+          <li><span class="fc">✓</span> Exclusive Elite badge</li>
+          <li><span class="fc">✓</span> Yearly merch pack</li>
+          <li><span class="fc">✓</span> Vote on next reviews</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('su')">Go Elite ⚡</button>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:32px;color:rgba(255,255,255,.25);font-size:.82rem;">All prices in INR · Save 20% with annual billing · Cancel anytime</p>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="join" style="background:var(--dark2);">
+  <div class="news-box">
+    <div class="sec-label" id="nLabel">// Stay Updated</div>
+    <h2 class="sec-title" id="nTitle">Never Miss a Drop</h2>
+    <p class="sec-desc" id="nDesc">Get the latest game reviews and exclusive content straight to your inbox.</p>
+    <div class="news-form">
+      <input type="email" id="newsEmail" placeholder="your@email.com"/>
+      <button onclick="doSubscribe()">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">NandanNice</div>
+  <div class="foot-links">
+    <a href="#games">Games</a><a href="#about">About</a><a href="#join">Contact</a>
+  </div>
+  <div class="foot-copy">© 2026 NandanNice · www.nandannice.com</div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="authOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="authModal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">
+      <img src="Nandan_Lego_Minifigure_in_Action_Pose.png" alt="N" onerror="this.style.display='none'"/>
+      NandanNice
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab on" id="tabSI" onclick="switchTab('si')">Sign In</button>
+      <button class="modal-tab" id="tabSU" onclick="switchTab('su')">Sign Up</button>
+    </div>
+    <div class="mform on" id="formSI">
+      <div class="fg"><label>Email</label><input type="email" id="siEmail" placeholder="your@email.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="siPass" placeholder="••••••••"/></div>
+      <div class="forgot">Forgot password?</div>
+      <button class="msubmit" onclick="doSignin()">Sign In →</button>
+      <div class="mswitch">No account? <span onclick="switchTab('su')">Sign Up</span></div>
+    </div>
+    <div class="mform" id="formSU">
+      <div class="fg"><label>Username</label><input type="text" id="suName" placeholder="GamerTag123"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="suEmail" placeholder="your@email.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="suPass" placeholder="Min 6 chars"/></div>
+      <button class="msubmit" onclick="doSignup()">Create Account →</button>
+      <div class="mswitch">Have an account? <span onclick="switchTab('si')">Sign In</span></div>
+    </div>
+    <div class="msuccess" id="mSuccess">
+      <div class="sicon">🎮</div>
+      <h3 id="mSuccTitle">Welcome!</h3>
+      <p id="mSuccMsg">Opening your library...</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminOverlay" onclick="if(event.target===this)closeAdmin()">
+  <div class="admin-panel">
+    <div class="admin-head">
+      <div class="admin-title">⚡ Admin Panel <span class="admin-badge-label">Nandan Only</span></div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-welcome">
+        <div class="admin-ava"><img src="Nandan_Lego_Minifigure_in_Action_Pose.png" alt="N"/></div>
+        <div><h3>Welcome back, Nandan! 👑</h3><p>Full admin access · All systems online</p></div>
+      </div>
+      <div class="admin-stats">
+        <div class="ast"><div class="ast-n" style="color:var(--cyan)">1,284</div><div class="ast-l">Total Users</div></div>
+        <div class="ast"><div class="ast-n" style="color:var(--pink)">₹2.4L</div><div class="ast-l">Revenue</div></div>
+        <div class="ast"><div class="ast-n" style="color:var(--yellow)">342</div><div class="ast-l">Online Now</div></div>
+        <div class="ast"><div class="ast-n" style="color:var(--green)">6</div><div class="ast-l">New Reviews</div></div>
+      </div>
+      <div class="asec">// Quick Actions</div>
+      <div class="admin-actions">
+        <button class="aact"><span class="aact-icon">📝</span><div><span class="aact-lbl">Add Review</span><span class="aact-desc">Publish a game review</span></div></button>
+        <button class="aact"><span class="aact-icon">👥</span><div><span class="aact-lbl">Manage Users</span><span class="aact-desc">Ban, promote, edit</span></div></button>
+        <button class="aact"><span class="aact-icon">💰</span><div><span class="aact-lbl">Revenue</span><span class="aact-desc">View earnings & stats</span></div></button>
+        <button class="aact"><span class="aact-icon">⚙️</span><div><span class="aact-lbl">Site Settings</span><span class="aact-desc">Banners, pricing, SEO</span></div></button>
+      </div>
+      <div class="asec">// Recent Users</div>
+      <table>
+        <thead><tr><th>Email</th><th>Plan</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr id="ur1"><td>priya_gamer@gmail.com</td><td><span class="up up-pro">Pro</span></td><td><span class="dot dot-on"></span>Online</td><td>Apr 18</td><td><button class="ban-btn" onclick="banUser('ur1','priya')">🚫 Ban</button></td></tr>
+          <tr id="ur2"><td>rahul_99@outlook.com</td><td><span class="up up-elite">Elite</span></td><td><span class="dot dot-on"></span>Online</td><td>Apr 17</td><td><button class="ban-btn" onclick="banUser('ur2','rahul')">🚫 Ban</button></td></tr>
+          <tr id="ur3"><td>sneha.plays@gmail.com</td><td><span class="up up-free">Rookie</span></td><td><span class="dot dot-off"></span>Offline</td><td>Apr 16</td><td><button class="ban-btn" onclick="banUser('ur3','sneha')">🚫 Ban</button></td></tr>
+          <tr id="ur4"><td>karthik_fps@yahoo.com</td><td><span class="up up-pro">Pro</span></td><td><span class="dot dot-off"></span>Offline</td><td>Apr 15</td><td><button class="ban-btn" onclick="banUser('ur4','karthik')">🚫 Ban</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div class="lib-overlay" id="libOverlay">
+  <div class="lib-nav">
+    <div class="lib-logo">🎮 NandanNice Library</div>
+    <div class="lib-user-info">
+      <div class="lib-ava" id="libAva">N</div>
+      <span id="libUname">Player</span>
+      <span class="lib-pbadge" id="libBadge">Rookie</span>
+    </div>
+    <button class="exit-btn" onclick="closeLib()">✕ Exit</button>
+  </div>
+  <div class="lib-body">
+    <div class="lib-welcome">
+      <h2>Welcome, <span id="libWelcome" style="background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Player</span>! 🎮</h2>
+      <p id="libSub">You're on the Rookie plan.</p>
+    </div>
+    <div class="lib-sec-title">// Free to Play</div>
+    <div class="lib-grid" id="freeGrid"></div>
+    <div class="lib-sec-title">// Premium Games</div>
+    <div class="lib-grid" id="premGrid"></div>
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall-overlay" id="paywallOverlay" onclick="if(event.target===this)closePaywall()">
+  <div class="paywall-box">
+    <div style="font-size:2.5rem;margin-bottom:14px;">🔒</div>
+    <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;margin-bottom:9px;" id="pwTitle">Game Locked</div>
+    <div style="color:rgba(255,255,255,.47);font-size:.88rem;line-height:1.6;margin-bottom:24px;">Upgrade to unlock every game in the NandanNice library!</div>
+    <div class="paywall-plans">
+      <div class="pp"><div class="pp-n">Pro Gamer</div><div class="pp-p" style="background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">₹299<span style="font-size:.7rem;-webkit-text-fill-color:rgba(255,255,255,.35)">/mo</span></div><div class="pp-t">Most Popular</div></div>
+      <div class="pp best"><div class="pp-n">Elite</div><div class="pp-p" style="background:linear-gradient(90deg,var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">₹799<span style="font-size:.7rem;-webkit-text-fill-color:rgba(255,255,255,.35)">/mo</span></div><div class="pp-t">All Access ⚡</div></div>
+    </div>
+    <button class="pw-btn" onclick="closePaywall()">Upgrade Now →</button>
+    <br/><button class="pw-cancel" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen">
+  <div id="gameLoading">
+    <div class="load-bg" id="loadBG"></div>
+    <div class="load-content">
+      <div id="loadTitle">LOADING</div>
+      <div id="loadSub">Connecting to servers...</div>
+      <div class="load-bar-wrap"><div id="loadBar"></div></div>
+      <div id="loadPct">0%</div>
+    </div>
+  </div>
+  <div id="gamePlay">
+    <div class="ghud-top">
+      <div id="gHudTitle">🎮 Game</div>
+      <div class="ghud-right">
+        <span id="gPlayers"></span>
+        <span id="gScore">SCORE: 0</span>
+        <button class="g-exit-btn" onclick="closeGame()">✕ EXIT</button>
+      </div>
+    </div>
+    <div id="gameArea">
+      <img id="gameBG" src="" alt=""/>
+      <div id="gameUI"></div>
+      <div class="g-crosshair" id="crosshair"><div class="ch-dot"></div></div>
+    </div>
+    <div class="ghud-bot">
+      <div class="hbar-wrap">
+        <div class="hbar-lbl">Health</div>
+        <div class="hbar"><div id="healthBar" style="background:linear-gradient(90deg,var(--pink),#ff6600);"></div></div>
+      </div>
+      <div id="gControls"></div>
+      <div id="gAmmo"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// ADMIN CREDENTIALS
+// ═══════════════════════════════════════
+var ADMIN_EMAIL = 'nandan@nandannice.com';
+var ADMIN_PASS  = 'NandanAdmin2026';
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+function openModal(tab) {
+  document.getElementById('authOverlay').classList.add('on');
+  switchTab(tab);
+}
+function closeModal() {
+  document.getElementById('authOverlay').classList.remove('on');
+  setTimeout(function() {
+    document.getElementById('mSuccess').classList.remove('on');
+    switchTab('si');
+  }, 300);
+}
+function switchTab(t) {
+  var isSI = t === 'si';
+  document.getElementById('tabSI').classList.toggle('on', isSI);
+  document.getElementById('tabSU').classList.toggle('on', !isSI);
+  document.getElementById('formSI').classList.toggle('on', isSI);
+  document.getElementById('formSU').classList.toggle('on', !isSI);
+  document.getElementById('mSuccess').classList.remove('on');
+}
+function shakeModal() {
+  var m = document.getElementById('authModal');
+  m.classList.add('shake');
+  setTimeout(function() { m.classList.remove('shake'); }, 400);
+}
+function showSuccess(title, msg, cb) {
+  document.getElementById('formSI').classList.remove('on');
+  document.getElementById('formSU').classList.remove('on');
+  document.getElementById('mSuccTitle').textContent = title;
+  document.getElementById('mSuccMsg').textContent = msg;
+  document.getElementById('mSuccess').classList.add('on');
+  setTimeout(function() { closeModal(); if (cb) cb(); }, 1800);
+}
+
+function doSignin() {
+  var em = document.getElementById('siEmail').value.trim();
+  var pw = document.getElementById('siPass').value;
+  if (!em || !pw) { shakeModal(); return; }
+  if (em === ADMIN_EMAIL && pw === ADMIN_PASS) {
+    showSuccess('Welcome Admin! 👑', 'Opening admin panel...', function() {
+      openAdmin();
+      openLib('Nandan', 'admin');
+    });
+    setAdminNav();
+    return;
+  }
+  if (pw.length < 6) {
+    shakeModal();
+    var p = document.getElementById('siPass');
+    p.value = ''; p.placeholder = '❌ Min 6 characters';
+    setTimeout(function() { p.placeholder = '••••••••'; }, 2000);
+    return;
+  }
+  var uname = em.split('@')[0];
+  showSuccess('Welcome back, ' + uname + '!', 'Opening your library...', function() {
+    openLib(uname, 'free');
+  });
+}
+
+function doSignup() {
+  var n  = document.getElementById('suName').value.trim();
+  var em = document.getElementById('suEmail').value.trim();
+  var pw = document.getElementById('suPass').value;
+  if (!n || !em || !pw) { shakeModal(); return; }
+  if (pw.length < 6) {
+    shakeModal();
+    var p = document.getElementById('suPass');
+    p.value = ''; p.placeholder = '❌ Min 6 characters';
+    setTimeout(function() { p.placeholder = 'Min 6 chars'; }, 2000);
+    return;
+  }
+  showSuccess('Welcome, ' + n + '! 🎮', 'Opening your library...', function() {
+    openLib(n, 'free');
+  });
+}
+
+function setAdminNav() {
+  document.getElementById('navAuth').innerHTML =
+    '<button class="btn-sm" style="color:var(--yellow);border-color:rgba(255,230,0,.4);" onclick="openAdmin()">👑 ADMIN</button>' +
+    '<button class="btn-sm" onclick="openLib(\'Nandan\',\'admin\')">🎮 Library</button>' +
+    '<button class="btn-hot" onclick="logoutAdmin()">Logout</button>';
+}
+function logoutAdmin() {
+  document.getElementById('navAuth').innerHTML =
+    '<div class="lang-wrap"><button class="lang-btn" id="langBtn" onclick="toggleLang(event)">🌐 EN ▾</button>' +
+    '<div class="lang-dd" id="langDd">' +
+    '<button class="lang-opt active" onclick="setLang(\'en\',this)">🇬🇧 English</button>' +
+    '<button class="lang-opt" onclick="setLang(\'hi\',this)">🇮🇳 हिन्दी</button>' +
+    '<button class="lang-opt" onclick="setLang(\'ta\',this)">🇮🇳 தமிழ்</button>' +
+    '<button class="lang-opt" onclick="setLang(\'ml\',this)">🇮🇳 മലയാളം</button>' +
+    '<button class="lang-opt" onclick="setLang(\'it\',this)">🇮🇹 Italiano</button>' +
+    '<button class="lang-opt" onclick="setLang(\'mn\',this)">🍌 Minionese</button></div></div>' +
+    '<button class="btn-sm" onclick="openModal(\'si\')">Sign In</button>' +
+    '<button class="btn-hot" onclick="openModal(\'su\')">Sign Up</button>';
+}
+
+// ═══════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════
+function openAdmin()  { document.getElementById('adminOverlay').classList.add('on'); }
+function closeAdmin() { document.getElementById('adminOverlay').classList.remove('on'); }
+function banUser(id, name) {
+  if (!confirm('Ban ' + name + '?')) return;
+  var r = document.getElementById(id);
+  r.classList.add('banned');
+  r.querySelector('.ban-btn').textContent = '✓ Banned';
+  r.querySelector('.ban-btn').classList.add('banned');
+}
+
+// ═══════════════════════════════════════
+// GAME DATA
+// ═══════════════════════════════════════
+var FREE_GAMES = [
+  {name:'Roblox',cat:'Sandbox / MMO',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1526456/header.jpg',color:'#ff4400',genre:'sandbox',hud:'ROBUX: 0 | AVATAR READY',controls:'WASD Move • E Interact • Q Build',ammo:'🧱 999 blocks'},
+  {name:'Among Us',cat:'Social Deduction',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg',color:'#7c5cbf',genre:'social',hud:'CREWMATE | TASKS: 3/7',controls:'WASD Move • E Use • R Report',ammo:'🔧 3 tasks left'},
+  {name:'Fall Guys',cat:'Party / Battle',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/header.jpg',color:'#ff66cc',genre:'party',hud:'ROUND 1/5 | 60 PLAYERS',controls:'WASD Move • Space Jump • Ctrl Dive',ammo:'👑 1 crown needed'},
+];
+var PREM_GAMES = [
+  {name:'Fortnite',cat:'Battle Royale',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1830/header.jpg',color:'#00c8ff',genre:'shooter',hud:'#47 ALIVE | STORM CLOSING',controls:'WASD Move • LMB Shoot • F Build',ammo:'🔫 30/90'},
+  {name:'Minecraft',cat:'Survival / Build',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg',color:'#5a9e3a',genre:'sandbox',hud:'DAY 1 | ♥♥♥♥♥♥♥♥♥♥',controls:'WASD Move • LMB Break • RMB Place',ammo:'⛏️ Iron Pickaxe x1'},
+  {name:'GTA V Online',cat:'Open World',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',color:'#ff6600',genre:'shooter',hud:'WANTED: ★☆☆☆☆ | $12,540',controls:'WASD Drive • LMB Shoot • F Enter Car',ammo:'🔫 Pistol 18/54'},
+  {name:'Apex Legends',cat:'Battle Royale',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg',color:'#cc0066',genre:'shooter',hud:'18 LEGENDS LEFT | RING CLOSING',controls:'WASD Move • LMB Shoot • Z Ult',ammo:'⚡ Shield: 75/100'},
+  {name:'Call of Duty: Warzone',cat:'FPS / BR',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1962663/header.jpg',color:'#c8a800',genre:'shooter',hud:'OPERATORS: 87 | CIRCLE MOVING',controls:'WASD Move • LMB Fire • C Slide',ammo:'🔫 M4 28/112'},
+  {name:'Valorant',cat:'Tactical FPS',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/header.jpg',color:'#ff2244',genre:'shooter',hud:'ATTACK | ROUND 12 | 10 KILLS',controls:'WASD Move • LMB Shoot • C Plant Spike',ammo:'🔫 Vandal 25/75'},
+  {name:'FIFA 25',cat:'Sports',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg',color:'#00aa44',genre:'sports',hud:"MAN UTD 0 - 0 REAL MADRID | 45'",controls:'WASD Move • A Pass • S Shoot • D Cross',ammo:'⚽ Stamina: 87%'},
+  {name:'Rocket League',cat:'Sports / Racing',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg',color:'#8800ff',genre:'sports',hud:'BLUE 1 - 2 ORANGE | 2:34',controls:'WASD Drive • Space Boost • Shift Jump',ammo:'🚀 Boost: 64%'},
+  {name:'League of Legends',cat:'MOBA',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/2767030/header.jpg',color:'#00aaaa',genre:'shooter',hud:'GOLD | KDA: 5/2/8 | 14:32',controls:'QWER Abilities • D/F Summoners • B Recall',ammo:'⚡ Ult: READY'},
+  {name:'Overwatch 2',cat:'Hero Shooter',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg',color:'#ff8800',genre:'shooter',hud:'ATTACK | PAYLOAD 47% | 2:18 LEFT',controls:'WASD Move • LMB Shoot • Q Ultimate',ammo:'💥 Ult: 76%'},
+  {name:'Cyberpunk 2077',cat:'RPG / Open World',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg',color:'#aaff00',genre:'shooter',hud:'V | STREET CRED: 42 | NIGHT CITY',controls:'WASD Move • LMB Shoot • F Interact',ammo:'🔫 Mantis Blades: ON'},
+  {name:'Elden Ring',cat:'Action RPG',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg',color:'#ffaa00',genre:'shooter',hud:'TARNISHED | RUNES: 4,521 | LIMGRAVE',controls:'WASD Move • LMB Attack • R Roll',ammo:'⚔️ Flask: 5/5'},
+  {name:'Hogwarts Legacy',cat:'RPG / Adventure',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg',color:'#9900ff',genre:'shooter',hud:'5TH YEAR | DEFENCE: A+ | HOGSMEADE',controls:'WASD Move • LMB Cast • R Dodge',ammo:'🧙 Spells: 8/8'},
+  {name:'Mortal Kombat 1',cat:'Fighting',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg',color:'#ff2200',genre:'shooter',hud:'SCORPION VS SUB-ZERO | ROUND 2',controls:'WASD Move • J Punch • K Kick • Space Block',ammo:'💀 FLAWLESS: 0'},
+];
+
+// ═══════════════════════════════════════
+// LIBRARY
+// ═══════════════════════════════════════
+function openLib(uname, plan) {
+  document.getElementById('libAva').textContent  = plan === 'admin' ? '👑' : uname[0].toUpperCase();
+  document.getElementById('libUname').textContent = uname;
+  document.getElementById('libWelcome').textContent = uname;
+  var b = document.getElementById('libBadge');
+  b.textContent  = plan === 'admin' ? '👑 ADMIN' : plan === 'pro' ? 'Pro Gamer' : plan === 'elite' ? 'Elite' : 'Rookie';
+  b.className    = 'lib-pbadge' + (plan !== 'free' ? ' ' + plan : '');
+  document.getElementById('libSub').textContent =
+    plan === 'free'  ? 'You\'re on Rookie — upgrade to unlock ' + PREM_GAMES.length + ' premium games!' :
+    plan === 'admin' ? 'You\'re the Admin — full access, everything free! 👑' :
+    'You\'re on ' + b.textContent + ' — enjoy full access! 🎉';
+  var paid = plan !== 'free';
+  document.getElementById('freeGrid').innerHTML = FREE_GAMES.map(function(g) { return cardHtml(g, true); }).join('');
+  document.getElementById('premGrid').innerHTML = PREM_GAMES.map(function(g) { return cardHtml(g, paid); }).join('');
+  document.getElementById('libOverlay').classList.add('on');
+}
+function cardHtml(g, unlocked) {
+  var safe = g.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  var lockHtml = unlocked ? '' :
+    '<div class="lib-lock-overlay"><div class="li-icon">🔒</div><div class="li-text">Premium</div></div>';
+  var btnClick = unlocked ? 'openGame("' + safe + '")' : 'openPaywall("' + safe + '")';
+  var btnClass = unlocked ? 'lib-play' : 'lib-play locked';
+  var btnText  = unlocked ? '▶ Play Now' : '🔒 Upgrade';
+  return '<div class="lib-card">' +
+    '<div class="lib-thumb-wrap">' +
+      '<img class="lib-thumb" src="' + g.img + '" alt="' + g.name + '" onerror="this.style.opacity=\'0\'" />' +
+      lockHtml +
+    '</div>' +
+    '<div class="lib-info">' +
+      '<div class="lib-gname">' + g.name + '</div>' +
+      '<div class="lib-gcat">' + g.cat + '</div>' +
+      '<button class="' + btnClass + '" onclick="' + btnClick + '">' + btnText + '</button>' +
+    '</div>' +
+  '</div>';
+}
+function closeLib() { document.getElementById('libOverlay').classList.remove('on'); }
+
+// ═══════════════════════════════════════
+// PAYWALL
+// ═══════════════════════════════════════
+function openPaywall(name) {
+  document.getElementById('pwTitle').textContent = '🔒 ' + name + ' is Premium';
+  document.getElementById('paywallOverlay').classList.add('on');
+}
+function closePaywall() { document.getElementById('paywallOverlay').classList.remove('on'); }
+
+// ═══════════════════════════════════════
+// GAME ENGINE
+// ═══════════════════════════════════════
+var gTimer = null, gTargets = [], gScore = 0;
+
+function openGame(name) {
+  var all = FREE_GAMES.concat(PREM_GAMES);
+  var g = null;
+  for (var i = 0; i < all.length; i++) { if (all[i].name === name) { g = all[i]; break; } }
+  if (!g) return;
+  var scr = document.getElementById('gameScreen');
+  scr.style.display = 'flex';
+  scr.style.flexDirection = 'column';
+  document.getElementById('gameLoading').style.display = 'flex';
+  document.getElementById('gamePlay').style.display = 'none';
+  document.getElementById('loadBG').style.backgroundImage = 'url(' + g.img + ')';
+  document.getElementById('loadTitle').textContent = g.name;
+  document.getElementById('loadTitle').style.color = g.color;
+  document.getElementById('loadSub').textContent = g.cat;
+  document.getElementById('loadBar').style.background = g.color;
+  var pct = 0;
+  var tips = ['Loading world...','Connecting to servers...','Preparing match...','Syncing players...','Get ready!'];
+  var ti = 0;
+  document.getElementById('loadPct').textContent = tips[0];
+  var iv = setInterval(function() {
+    pct += Math.random() * 7 + 2;
+    if (pct >= 100) { pct = 100; clearInterval(iv); startGame(g); return; }
+    document.getElementById('loadBar').style.width = pct + '%';
+    var ni = Math.min(Math.floor(pct / 25), tips.length - 1);
+    if (ni > ti) { ti = ni; document.getElementById('loadPct').textContent = tips[ti]; }
+  }, 110);
+}
+
+function startGame(g) {
+  document.getElementById('gameLoading').style.display = 'none';
+  var gp = document.getElementById('gamePlay');
+  gp.style.display = 'flex'; gp.style.flexDirection = 'column'; gp.style.height = '100%';
+  document.getElementById('gameBG').src = g.img;
+  document.getElementById('gHudTitle').textContent = '🎮 ' + g.name;
+  document.getElementById('gPlayers').textContent = '👥 ' + (g.players || '');
+  document.getElementById('gScore').textContent = g.hud || 'SCORE: 0';
+  document.getElementById('gControls').textContent = g.controls || '';
+  document.getElementById('gAmmo').textContent = g.ammo || '';
+  document.getElementById('healthBar').style.background = 'linear-gradient(90deg,' + g.color + ',' + g.color + '88)';
+  gScore = 0;
+  var area = document.getElementById('gameArea');
+  var ui   = document.getElementById('gameUI');
+  area.querySelectorAll('.g-target').forEach(function(t) { t.remove(); });
+  document.getElementById('crosshair').style.display = 'none';
+  area.onclick = null;
+  if (gTimer) { clearInterval(gTimer); gTimer = null; }
+
+  if (g.genre === 'shooter') {
+    document.getElementById('crosshair').style.display = 'block';
+    ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:1rem;color:rgba(255,255,255,.45);">🎯 Click the pink targets!</div>';
+    spawnTargets(area, g);
+    area.onclick = shootTarget;
+  } else if (g.genre === 'sports' || g.genre === 'party') {
+    var my = 0, cpu = 0;
+    ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:1.3rem;color:' + g.color + ';margin-bottom:14px;">PRESS SPACE or CLICK!</div>' +
+      '<div id="tscore" style="font-family:\'Orbitron\',monospace;font-size:1.1rem;">YOU 0 - 0 CPU</div>';
+    function kick(e) {
+      if (e.type === 'keydown' && e.code !== 'Space') return;
+      if (e.type === 'keydown') e.preventDefault();
+      if (Math.random() > 0.38) {
+        my++;
+        ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:2rem;color:' + g.color + ';">⚡ GOAL!</div>';
+        gScore += 100;
+      } else {
+        cpu++;
+        ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:1.5rem;color:#ff2d78;">❌ CPU SCORED!</div>';
+      }
+      setTimeout(function() {
+        ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:1.3rem;color:' + g.color + ';">PRESS SPACE or CLICK!</div>' +
+          '<div style="font-family:\'Orbitron\',monospace;font-size:1.1rem;">YOU ' + my + ' - ' + cpu + ' CPU</div>';
+      }, 1400);
+      document.getElementById('gScore').textContent = 'SCORE: ' + gScore;
+    }
+    area.onclick = kick;
+    document.addEventListener('keydown', kick);
+    area._kick = kick;
+  } else {
+    // sandbox / social / collect
+    var res = 0;
+    var items = ['🪵','🪨','💎','🌾','⛏️','🔩','🍄','🌻'];
+    ui.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:1rem;color:' + g.color + ';margin-bottom:14px;">CLICK TILES TO COLLECT!</div>' +
+      '<div id="resgrid" style="display:grid;grid-template-columns:repeat(7,46px);gap:7px;"></div>' +
+      '<div style="font-family:\'Orbitron\',monospace;font-size:.8rem;margin-top:14px;color:rgba(255,255,255,.5);">RESOURCES: <span id="rescount">0</span></div>';
+    setTimeout(function() {
+      var grid = document.getElementById('resgrid');
+      if (!grid) return;
+      grid.innerHTML = Array.from({length:21}, function() {
+        var em = items[Math.floor(Math.random() * items.length)];
+        return '<div onclick="collectRes(this)" style="width:46px;height:46px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;border-radius:4px;transition:transform .1s;">' + em + '</div>';
+      }).join('');
+    }, 50);
+    window.collectRes = function(el) {
+      res++; gScore += 10;
+      var rc = document.getElementById('rescount'); if (rc) rc.textContent = res;
+      document.getElementById('gScore').textContent = 'SCORE: ' + gScore;
+      el.style.transform = 'scale(0)'; el.style.opacity = '0';
+      setTimeout(function() {
+        el.style.transform = 'scale(1)'; el.style.opacity = '1';
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+      }, 500);
+    };
+    area.onclick = null;
+  }
+}
+
+function spawnTargets(area, g) {
+  gTimer = setInterval(function() {
+    if (area.querySelectorAll('.g-target').length > 6) return;
+    var t = document.createElement('div');
+    var sz = 38 + Math.random() * 32;
+    t.className = 'g-target';
+    t.style.left   = (8 + Math.random() * 76) + '%';
+    t.style.top    = (15 + Math.random() * 58) + '%';
+    t.style.width  = sz + 'px';
+    t.style.height = sz + 'px';
+    t.dataset.pts  = Math.round(80 / (sz / 38));
+    area.appendChild(t);
+    setTimeout(function() { if (t.parentNode) t.remove(); }, 2400);
+  }, 700);
+}
+
+function shootTarget(e) {
+  var t = e.target.closest('.g-target');
+  if (!t) return;
+  var pts = parseInt(t.dataset.pts) || 50;
+  gScore += pts;
+  document.getElementById('gScore').textContent = 'SCORE: ' + gScore;
+  var fl = document.createElement('div');
+  var rect = document.getElementById('gameArea').getBoundingClientRect();
+  fl.style.cssText = 'position:absolute;left:' + (e.clientX - rect.left - 16) + 'px;top:' + (e.clientY - rect.top - 24) + 'px;' +
+    'font-family:\'Orbitron\',monospace;font-size:1rem;font-weight:700;color:var(--yellow);' +
+    'pointer-events:none;z-index:10;animation:splatOut .4s ease forwards;';
+  fl.textContent = '+' + pts;
+  document.getElementById('gameArea').appendChild(fl);
+  setTimeout(function() { if (fl.parentNode) fl.remove(); }, 500);
+  t.remove();
+}
+
+document.getElementById('gameArea').addEventListener('mousemove', function(e) {
+  var ch = document.getElementById('crosshair');
+  if (ch.style.display === 'none') return;
+  var r = document.getElementById('gameArea').getBoundingClientRect();
+  ch.style.left = (e.clientX - r.left - 14) + 'px';
+  ch.style.top  = (e.clientY - r.top  - 14) + 'px';
+});
+
+function closeGame() {
+  document.getElementById('gameScreen').style.display = 'none';
+  if (gTimer) { clearInterval(gTimer); gTimer = null; }
+  var area = document.getElementById('gameArea');
+  area.onclick = null;
+  if (area._kick) { document.removeEventListener('keydown', area._kick); delete area._kick; }
+  area.querySelectorAll('.g-target').forEach(function(t) { t.remove(); });
+  document.getElementById('crosshair').style.display = 'none';
+}
+
+// ═══════════════════════════════════════
+// NEWSLETTER
+// ═══════════════════════════════════════
+function doSubscribe() {
+  var inp = document.getElementById('newsEmail');
+  if (!inp.value.trim()) { inp.focus(); return; }
+  var btn = inp.nextElementSibling;
+  btn.textContent = '✓ Done!';
+  btn.style.background = 'linear-gradient(135deg,var(--green),#00aa44)';
+  inp.value = ''; inp.placeholder = '✓ Welcome to NandanNice!';
+  setTimeout(function() {
+    btn.textContent = 'Subscribe'; btn.style.background = '';
+    inp.placeholder = 'your@email.com';
+  }, 3000);
+}
+
+// ═══════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════
+var LANGS = {
+  en:{flag:'🇬🇧',code:'EN',badge:'🎮 Level Up Your Game',h1:'NANDAN<span class="nice">NICE</span>',desc:'Your ultimate gaming destination. Reviews, news, guides and a community that lives and breathes games.',b1:'Explore Games',b2:'Join Community'},
+  hi:{flag:'🇮🇳',code:'HI',badge:'🎮 अपना गेम लेवल अप करो',h1:'नंदन<span class="nice">नाइस</span>',desc:'आपकी अल्टीमेट गेमिंग डेस्टिनेशन। रिव्यू, न्यूज़, गाइड्स।',b1:'गेम्स देखें',b2:'कम्युनिटी जॉइन करें'},
+  ta:{flag:'🇮🇳',code:'TA',badge:'🎮 கேமை மேம்படுத்துங்கள்',h1:'நந்தன்<span class="nice">நைஸ்</span>',desc:'உங்கள் அல்டிமேட் கேமிங் இடம். விமர்சனங்கள், செய்திகள்.',b1:'கேம்களை காண்க',b2:'சமூகத்தில் சேருங்கள்'},
+  ml:{flag:'🇮🇳',code:'ML',badge:'🎮 ഗെയിം ലെവൽ അപ്പ് ചെയ്യൂ',h1:'നന്ദൻ<span class="nice">നൈസ്</span>',desc:'നിങ്ങളുടെ അൾട്ടിമേറ്റ് ഗെയിമിംഗ് ഡെസ്റ്റിനേഷൻ.',b1:'ഗെയിമുകൾ കാണൂ',b2:'കമ്മ്യൂണിറ്റിയിൽ ചേരൂ'},
+  it:{flag:'🇮🇹',code:'IT',badge:'🎮 Sali di livello',h1:'NANDAN<span class="nice">NICE</span>',desc:'La tua destinazione gaming definitiva. Recensioni, notizie, guide.',b1:'Esplora i Giochi',b2:'Unisciti alla Community'},
+  mn:{flag:'🍌',code:'BELLO',badge:'🎮 Bello! Poopaye Game!',h1:'NANDAN<span class="nice">NICE</span>',desc:'Whaaat?! Dis da BEST gaming place! Bello bello! La la la! Hana dul sae!',b1:'🍌 Tulaliloo Game!',b2:'Bello Join!'},
+};
+function toggleLang(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('langDd');
+  if (dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var dd = document.getElementById('langDd');
+  if (dd) dd.classList.remove('open');
+});
+function setLang(code, el) {
+  var l = LANGS[code]; if (!l) return;
+  var lb = document.getElementById('langBtn'); if (lb) lb.textContent = l.flag + ' ' + l.code + ' ▾';
+  document.querySelectorAll('.lang-opt').forEach(function(b) { b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  var dd = document.getElementById('langDd'); if (dd) dd.classList.remove('open');
+  var s = function(id, txt) { var e = document.getElementById(id); if (e) e.textContent = txt; };
+  var si = function(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; };
+  s('hBadge', l.badge);
+  si('hH1', l.h1);
+  s('hDesc', l.desc);
+  s('hBtn1', l.b1);
+  s('hBtn2', l.b2);
+}
+
+// ═══════════════════════════════════════
+// RIGHT CLICK SHOOT (BATTLE AXE SWING)
+// ═══════════════════════════════════════
+var ammo = 30, reloading = false;
+function updateAmmoHUD() {
+  var el = document.getElementById('ammoHUD');
+  document.getElementById('ammoTxt').textContent = ammo + '/30';
+  el.style.opacity = '1';
+  clearTimeout(el._t);
+  el._t = setTimeout(function() { el.style.opacity = '0'; }, 2200);
+}
+function doReload() {
+  if (reloading) return;
+  reloading = true;
+  var el = document.getElementById('ammoHUD'); el.style.opacity = '1';
+  var c = 0;
+  var iv = setInterval(function() {
+    c++;
+    document.getElementById('ammoTxt').textContent = 'RELOADING ' + '█'.repeat(c) + '░'.repeat(10 - c);
+    if (c >= 10) { clearInterval(iv); ammo = 30; reloading = false; updateAmmoHUD(); }
+  }, 130);
+}
+document.addEventListener('contextmenu', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+  e.preventDefault();
+  if (reloading) return;
+  if (ammo <= 0) { doReload(); return; }
+  ammo--; updateAmmoHUD();
+  if (ammo === 0) setTimeout(doReload, 500);
+  var f = document.createElement('div');
+  f.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;width:20px;height:20px;' +
+    'border-radius:50%;background:radial-gradient(circle,#fff,#ffe600,transparent);' +
+    'pointer-events:none;z-index:99999;transform:translate(-50%,-50%);animation:flashOut .15s ease forwards;';
+  document.body.appendChild(f); setTimeout(function() { if (f.parentNode) f.remove(); }, 200);
+  var s = document.createElement('div');
+  s.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + (e.clientY - 10) + 'px;' +
+    'font-size:1.6rem;pointer-events:none;z-index:99998;transform:translateX(-50%);animation:splatOut .45s ease forwards;';
+  s.textContent = ['💥','🔥','✨','⚡','🪓'][Math.floor(Math.random() * 5)];
+  document.body.appendChild(s); setTimeout(function() { if (s.parentNode) s.remove(); }, 500);
+});
+document.addEventListener('keydown', function(e) {
+  if ((e.key === 'r' || e.key === 'R') && !reloading) doReload();
+  if (e.key === 'Escape') { closeModal(); closeAdmin(); closeLib(); closeGame(); closePaywall(); }
+});
+
+// ═══════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════
+var pcols = ['#ff2d78','#00f5ff','#ffe600','#39ff14','#6a00ff'];
+var pc = document.getElementById('particles');
+for (var i = 0; i < 22; i++) {
+  var p = document.createElement('div');
+  p.className = 'particle';
+  var sz = Math.random() * 3 + 2;
+  p.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;left:' + Math.random() * 100 + '%;' +
+    'background:' + pcols[Math.floor(Math.random() * pcols.length)] + ';' +
+    'animation-duration:' + (Math.random() * 14 + 10) + 's;animation-delay:' + (Math.random() * 10) + 's;' +
+    'box-shadow:0 0 5px currentColor;';
+  pc.appendChild(p);
+}
+</script>
+</body>
+</html>
